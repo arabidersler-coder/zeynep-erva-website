@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ZEYNEP ERVA CESUR",
-  description: "Basın Mensubu | Hikayelerin Peşinde",
+  description: "Hikâyelerin izini süren basın mensubu olur mu sence",
   icons: {
     icon: '/favicon.ico?v=2',
     shortcut: '/favicon.png?v=2',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "ZEYNEP ERVA CESUR",
-    description: "Hikayelere inanan bir basın mensubu.",
+    description: "Hikâyelerin izini süren basın mensubu olur mu sence",
     url: 'https://zeynepervacesur.com',
     siteName: 'Zeynep Erva Cesur',
     images: [
