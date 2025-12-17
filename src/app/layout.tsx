@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon-v3.ico',
     shortcut: '/favicon-v3.png',
-    apple: '/favicon-v3.png',
+    apple: '/apple-touch-icon.png?v=4',
   },
   openGraph: {
     title: "ZEYNEP ERVA CESUR",
