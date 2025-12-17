@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Trash2, Upload, Image as ImageIcon } from "lucide-react";
+import { Trash2, Upload, Image as ImageIcon, Pencil } from "lucide-react";
 import Image from "next/image";
 
 interface PhotoItem {
@@ -18,6 +18,7 @@ export default function GalleryAdmin() {
     const [uploading, setUploading] = useState(false);
     const [title, setTitle] = useState("");
     const [file, setFile] = useState<File | null>(null);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     useEffect(() => {
         fetchItems();
@@ -41,100 +42,143 @@ export default function GalleryAdmin() {
         }
     };
 
-    const handleUpload = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!file) return;
 
-        setUploading(true);
+        if (editingId) {
+            // Update logic
+            setUploading(true);
+            const { error } = await supabase
+                .from('photos')
+                .update({ title })
+                .eq('id', editingId);
 
-        // 1. Upload to Storage
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-            .from('images')
-            .upload(filePath, file);
-
-        if (uploadError) {
-            alert("Yükleme hatası: " + uploadError.message);
+            if (error) {
+                alert("Güncelleme hatası: " + error.message);
+            } else {
+                setEditingId(null);
+                setTitle("");
+                fetchItems();
+            }
             setUploading(false);
-            return;
-        }
-
-        // 2. Get Public URL
-        const { data: { publicUrl } } = supabase.storage
-            .from('images')
-            .getPublicUrl(filePath);
-
-        // 3. Insert into Database
-        const { error: dbError } = await supabase
-            .from('photos')
-            .insert([{ url: publicUrl, title: title || "Fotoğraf" }]);
-
-        if (dbError) {
-            alert("Veritabanı hatası: " + dbError.message);
         } else {
-            setFile(null);
-            setTitle("");
-            fetchItems();
+            // Create (Upload) logic
+            if (!file) return;
+            setUploading(true);
+
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Math.random()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('images')
+                .upload(filePath, file);
+
+            if (uploadError) {
+                alert("Yükleme hatası: " + uploadError.message);
+                setUploading(false);
+                return;
+            }
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('images')
+                .getPublicUrl(filePath);
+
+            const { error: dbError } = await supabase
+                .from('photos')
+                .insert([{ url: publicUrl, title: title || "Fotoğraf" }]);
+
+            if (dbError) {
+                alert("Veritabanı hatası: " + dbError.message);
+            } else {
+                setFile(null);
+                setTitle("");
+                fetchItems();
+            }
+            setUploading(false);
         }
-        setUploading(false);
     };
 
     const handleDelete = async (id: string, url: string) => {
         if (!confirm("Silmek istediğinize emin misiniz?")) return;
-
-        // Delete from DB
         const { error } = await supabase.from("photos").delete().eq("id", id);
-
-        // Optimistically remove from UI
         if (!error) {
             setItems(items.filter(i => i.id !== id));
-            // Note: Ideally we should also delete from Storage, but for this demo simplify we just delete DB record
+            if (editingId === id) cancelEdit();
         }
+    };
+
+    const startEdit = (item: PhotoItem) => {
+        setEditingId(item.id);
+        setTitle(item.title);
+        setFile(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const cancelEdit = () => {
+        setEditingId(null);
+        setTitle("");
+        setFile(null);
     };
 
     return (
         <div className="space-y-8">
             <h2 className="text-3xl font-serif mb-8">Galeri Yönetimi</h2>
 
-            {/* Upload Form */}
-            <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
+            {/* Form */}
+            <div className={`border border-white/10 p-6 rounded-xl transition-colors ${editingId ? 'bg-[var(--accent-gold)]/10 border-[var(--accent-gold)]/30' : 'bg-white/5'}`}>
                 <h3 className="text-xl mb-4 font-medium flex items-center gap-2">
-                    <Upload className="w-5 h-5" /> Yeni Fotoğraf Yükle
+                    {editingId ? (
+                        <><Pencil className="w-5 h-5 text-[var(--accent-gold)]" /> Fotoğrafı Düzenle</>
+                    ) : (
+                        <><Upload className="w-5 h-5" /> Yeni Fotoğraf Yükle</>
+                    )}
                 </h3>
-                <form onSubmit={handleUpload} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="md:col-span-2 border-2 border-dashed border-white/20 rounded-lg p-8 text-center hover:border-white/40 transition-colors">
-                        <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            id="fileInput"
-                            onChange={handleFileChange}
-                        />
-                        <label htmlFor="fileInput" className="cursor-pointer flex flex-col items-center">
-                            <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
-                            <span className="text-gray-300">{file ? file.name : "Dosya Seçin veya Sürükleyin"}</span>
-                        </label>
-                    </div>
+
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {!editingId && (
+                        <div className="md:col-span-2 border-2 border-dashed border-white/20 rounded-lg p-8 text-center hover:border-white/40 transition-colors">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                id="fileInput"
+                                onChange={handleFileChange}
+                            />
+                            <label htmlFor="fileInput" className="cursor-pointer flex flex-col items-center">
+                                <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
+                                <span className="text-gray-300">{file ? file.name : "Dosya Seçin veya Sürükleyin"}</span>
+                            </label>
+                        </div>
+                    )}
 
                     <input
                         type="text"
                         placeholder="Başlık (Opsiyonel)"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white md:col-span-2"
+                        className="bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white md:col-span-2 focus:outline-none focus:border-[var(--accent-gold)]"
                     />
 
-                    <button
-                        type="submit"
-                        disabled={!file || uploading}
-                        className={`bg-white text-black font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors md:col-span-2 ${uploading ? 'opacity-50 cursor-not-allowed' : ''
-                            }`}
-                    >
-                        {uploading ? 'Yükleniyor...' : 'Yükle'}
-                    </button>
+                    <div className="md:col-span-2 flex gap-3">
+                        <button
+                            type="submit"
+                            disabled={(!file && !editingId) || uploading}
+                            className={`flex-1 bg-white text-black font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            {uploading ? 'İşleniyor...' : (editingId ? 'Güncelle' : 'Yükle')}
+                        </button>
+
+                        {editingId && (
+                            <button
+                                type="button"
+                                onClick={cancelEdit}
+                                className="px-6 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition-colors"
+                            >
+                                Vazgeç
+                            </button>
+                        )}
+                    </div>
                 </form>
             </div>
 
@@ -148,7 +192,7 @@ export default function GalleryAdmin() {
                     items.map((item) => (
                         <div
                             key={item.id}
-                            className="relative aspect-[4/5] bg-gray-900 rounded-xl overflow-hidden group shadow-lg"
+                            className={`relative aspect-[4/5] bg-gray-900 rounded-xl overflow-hidden group shadow-lg border-2 transition-all ${editingId === item.id ? 'border-[var(--accent-gold)] scale-95 opacity-50' : 'border-transparent'}`}
                         >
                             <Image
                                 src={item.url}
@@ -156,12 +200,20 @@ export default function GalleryAdmin() {
                                 fill
                                 className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                <button
+                                    onClick={() => startEdit(item)}
+                                    className="p-2 bg-white text-black rounded-full hover:bg-[var(--accent-gold)] transition-colors"
+                                    title="Düzenle"
+                                >
+                                    <Pencil className="w-4 h-4" />
+                                </button>
                                 <button
                                     onClick={() => handleDelete(item.id, item.url)}
                                     className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                    title="Sil"
                                 >
-                                    <Trash2 className="w-5 h-5" />
+                                    <Trash2 className="w-4 h-4" />
                                 </button>
                             </div>
                             <div className="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black/80 to-transparent">
