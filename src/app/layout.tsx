@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: "ZEYNEP ERVA CESUR",
   description: "Hikâyelerin izini süren basın mensubu",
   icons: {
-    icon: '/favicon-v2.ico',
-    shortcut: '/favicon-v2.png',
-    apple: '/favicon-v2.png',
+    icon: '/favicon-v3.ico',
+    shortcut: '/favicon-v3.png',
+    apple: '/favicon-v3.png',
   },
   openGraph: {
     title: "ZEYNEP ERVA CESUR",

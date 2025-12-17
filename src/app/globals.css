@@ -73,7 +73,7 @@ html {
 }
 
 .animate-scroll {
-  animation: scroll 120s linear infinite;
+  animation: scroll 240s linear infinite;
   min-width: 100%;
 }
 
