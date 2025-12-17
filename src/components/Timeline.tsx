@@ -69,7 +69,7 @@ export default function Timeline() {
 
                                 <div className="flex-1 md:w-1/2 text-right hidden md:block" />
 
-                                <div className="flex-1 md:w-1/2">
+                                <div className="flex-1 md:w-1/2 pl-6 md:pl-0">
                                     <div className={`transition-all duration-500 hover:translate-x-2 ${index % 2 === 0 ? "md:text-right md:hover:-translate-x-2 md:hover:translate-x-0" : ""
                                         }`}>
                                         <span className="text-xs font-medium text-[var(--accent-gold)] tracking-widest uppercase block mb-3 opacity-80">
