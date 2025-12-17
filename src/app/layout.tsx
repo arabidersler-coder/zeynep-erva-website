@@ -21,6 +21,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+  manifest: '/manifest.json',
   openGraph: {
     title: "ZEYNEP ERVA CESUR",
     description: "Hikâyelerin izini süren basın mensubu",
