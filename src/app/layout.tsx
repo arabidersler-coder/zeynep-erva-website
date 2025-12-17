@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: "ZEYNEP ERVA CESUR",
   description: "Basın Mensubu | Hikayelerin Peşinde",
   icons: {
-    icon: '/favicon.ico', // We will save the generated image as .ico or .png
-    shortcut: '/favicon.png',
-    apple: '/favicon.png',
+    icon: '/favicon.ico?v=2',
+    shortcut: '/favicon.png?v=2',
+    apple: '/favicon.png?v=2',
   },
   openGraph: {
     title: "ZEYNEP ERVA CESUR",
