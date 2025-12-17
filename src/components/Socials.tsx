@@ -8,12 +8,17 @@ import HiddenGiftModal from "./HiddenGiftModal";
 
 export default function Socials() {
     const [isGiftOpen, setIsGiftOpen] = useState(false);
+    const [activeTooltip, setActiveTooltip] = useState<'none' | 'zeynep' | 'developer'>('none');
+
+    const toggleTooltip = (name: 'zeynep' | 'developer') => {
+        setActiveTooltip(prev => prev === name ? 'none' : name);
+    };
 
     return (
-        <section className="py-24 relative z-10 border-t border-white/5">
+        <section className="py-24 relative z-10 border-t border-white/5" onClick={() => setActiveTooltip('none')}>
             <HiddenGiftModal isOpen={isGiftOpen} onClose={() => setIsGiftOpen(false)} />
 
-            <div className="max-w-4xl mx-auto text-center px-4">
+            <div className="max-w-4xl mx-auto text-center px-4" onClick={(e) => e.stopPropagation()}>
                 <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -59,13 +64,18 @@ export default function Socials() {
                 </motion.div>
 
                 <div className="mt-24 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-gray-600 font-light border-t border-white/5 pt-8">
-                    <div className="relative group inline-block">
-                        <span className="text-[var(--accent-gold)] font-medium tracking-wide brightness-125 cursor-default">
+                    <div
+                        className="relative group inline-block"
+                        onClick={() => toggleTooltip('zeynep')}
+                    >
+                        <span className="text-[var(--accent-gold)] font-medium tracking-wide brightness-125 cursor-pointer select-none">
                             {new Date().getFullYear()} Zeynep Erva Cesur
                         </span>
 
                         {/* Hidden Message Tooltip */}
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-max max-w-[250px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 transform group-hover:translate-y-0 translate-y-2 z-50 pointer-events-none">
+                        <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-max max-w-[250px] transition-all duration-500 transform z-50 pointer-events-none
+                            ${activeTooltip === 'zeynep' ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}
+                        `}>
                             <div className="bg-[#0a0a0a]/90 backdrop-blur-md border border-[var(--accent-gold)]/20 rounded-xl p-4 shadow-[0_0_30px_rgba(212,175,55,0.1)] text-center">
                                 <p className="text-gray-300 text-xs font-serif leading-relaxed italic">
                                     "Bu site, hikâyelere inanan bir basın mensubu için hazırlandı."
@@ -79,15 +89,20 @@ export default function Socials() {
                     </div>
 
                     {/* Developer Credit & Tooltip */}
-                    <div className="relative group">
-                        <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--accent-gold)] transition-colors duration-300">
+                    <div
+                        className="relative group"
+                        onClick={() => toggleTooltip('developer')}
+                    >
+                        <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--accent-gold)] transition-colors duration-300 select-none">
                             <span className="opacity-50">&lt; / &gt;</span>
                             <span>Developed by</span>
                             <span className="font-medium text-gray-400 group-hover:text-white transition-colors">Talha Çalargün</span>
                         </div>
 
                         {/* Hover Card */}
-                        <div className="absolute bottom-full right-1/2 translate-x-1/2 mb-4 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50">
+                        <div className={`absolute bottom-full right-1/2 translate-x-1/2 mb-4 w-72 transition-all duration-300 transform z-50
+                            ${activeTooltip === 'developer' ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}
+                        `}>
                             <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
                                 {/* Glow Effect */}
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--accent-gold)] to-transparent opacity-50" />
