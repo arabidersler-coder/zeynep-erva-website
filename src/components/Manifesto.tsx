@@ -1,9 +1,25 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function Manifesto() {
-    const text = "Haber bir an, hikâye kalıcıdır · Basın etikle anlam kazanır · Her kare bir tanıklıktır · ";
+    const [text, setText] = useState("Haber bir an, hikâye kalıcıdır · Basın etikle anlam kazanır · Her kare bir tanıklıktır · ");
+
+    useEffect(() => {
+        const fetchManifesto = async () => {
+            const { data } = await supabase
+                .from('personal_notes')
+                .select('manifesto_text')
+                .single();
+            if (data?.manifesto_text) {
+                // Ensure text ends with a separator if not present-ish
+                const fetched = data.manifesto_text.trim();
+                setText(fetched + (fetched.endsWith('·') ? ' ' : ' · '));
+            }
+        };
+        fetchManifesto();
+    }, []);
 
     // Duplicate content to ensure it covers screens of all sizes easily
     const content = Array(8).fill(text).join("");

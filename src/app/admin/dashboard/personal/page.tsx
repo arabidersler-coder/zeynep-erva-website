@@ -11,7 +11,8 @@ export default function PersonalAdmin() {
     const [form, setForm] = useState({
         motto: "",
         story_title: "",
-        story_content: ""
+        story_content: "",
+        manifesto_text: ""
     });
 
     useEffect(() => {
@@ -31,7 +32,8 @@ export default function PersonalAdmin() {
                 setForm({
                     motto: data.motto || "",
                     story_title: data.story_title || "",
-                    story_content: data.story_content || ""
+                    story_content: data.story_content || "",
+                    manifesto_text: data.manifesto_text || ""
                 });
             }
         } catch (error) {
@@ -111,6 +113,20 @@ export default function PersonalAdmin() {
                             placeholder="Hikayeni buraya yaz..."
                         />
                     </div>
+                </div>
+
+                {/* Manifesto Section */}
+                <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6 shadow-xl">
+                    <label className="block text-sm font-medium text-[var(--accent-gold)] mb-4 uppercase tracking-wider">
+                        Manifesto (Kayan Yazı)
+                    </label>
+                    <textarea
+                        value={form.manifesto_text}
+                        onChange={(e) => setForm({ ...form, manifesto_text: e.target.value })}
+                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-white focus:outline-none focus:border-[var(--accent-gold)] focus:ring-1 focus:ring-[var(--accent-gold)] transition-all min-h-[100px] font-mono text-sm"
+                        placeholder="Örn: Haber bir an, hikâye kalıcıdır..."
+                    />
+                    <p className="text-xs text-gray-500 mt-2">Footer üzerindeki kayan altın şerit metni.</p>
                 </div>
 
                 <button
