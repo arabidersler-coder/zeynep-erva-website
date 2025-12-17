@@ -1,7 +1,32 @@
-
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "ZEYNEP ERVA CESUR",
+  description: "Basın Mensubu | Hikayelerin Peşinde",
+  icons: {
+    icon: '/favicon.ico', // We will save the generated image as .ico or .png
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
+  openGraph: {
+    title: "ZEYNEP ERVA CESUR",
+    description: "Hikayelere inanan bir basın mensubu.",
+    url: 'https://zeynepervacesur.com',
+    siteName: 'Zeynep Erva Cesur',
+    images: [
+      {
+        url: '/erva-splash.jpg', // Using the existing splash image for OG
+        width: 1200,
+        height: 630,
+        alt: 'Zeynep Erva Cesur',
+      },
+    ],
+    locale: 'tr_TR',
+    type: 'website',
+  },
+};
 import BackgroundMusic from "@/components/BackgroundMusic";
 
 const playfair = Playfair_Display({
