@@ -9,6 +9,7 @@ import References from "@/components/References";
 import Gallery from "@/components/Gallery";
 import Socials from "@/components/Socials";
 import SplashScreen from "@/components/SplashScreen";
+import Manifesto from "@/components/Manifesto";
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -25,6 +26,7 @@ export default function Home() {
           <Timeline />
           <References />
           <Gallery />
+          <Manifesto />
           <Socials />
         </>
       )}

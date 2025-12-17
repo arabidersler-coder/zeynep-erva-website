@@ -62,6 +62,24 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 40s linear infinite;
+  min-width: 100%;
+}
+
+.pause-on-hover:hover .animate-scroll {
+  animation-play-state: paused;
+}
 
 @layer utilities {
   .text-balance {
