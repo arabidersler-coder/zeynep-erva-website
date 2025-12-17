@@ -23,8 +23,8 @@ export default function About() {
                     <p className="text-xl md:text-3xl text-white/90 leading-relaxed font-serif font-light">
                         "Medya ve basın dünyasında, haberciliğin etik değerlerine bağlı kalarak
                         topluma doğru bilgiyi ulaştırmayı amaçlayan bir basın mensubu.
-                        Her karenin ve her satırın bir hikayesi olduğuna inanıyor,
-                        anları zamansız kılmak için deklanşöre basıyorum."
+                        Her karenin ve her satırın bir hikâyesi olduğuna inanıyor,
+                        bu hikâyelerin doğru bir akışla zamana iz bırakmasını sağlıyorum."
                     </p>
 
                     <div className="mt-16">
