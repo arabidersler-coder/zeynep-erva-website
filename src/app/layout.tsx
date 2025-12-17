@@ -6,9 +6,20 @@ export const metadata: Metadata = {
   title: "ZEYNEP ERVA CESUR",
   description: "Hikâyelerin izini süren basın mensubu",
   icons: {
-    icon: '/favicon-v3.ico',
-    shortcut: '/favicon-v3.png',
-    apple: '/apple-touch-icon.png?v=4',
+    icon: [
+      { url: '/favicon-v3.ico?v=5', sizes: 'any' },
+      { url: '/favicon-v3.png?v=5', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/favicon-v3.png?v=5',
+    apple: [
+      { url: '/apple-touch-icon.png?v=5', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'apple-touch-icon-precomposed',
+        url: '/apple-touch-icon.png?v=5',
+      },
+    ],
   },
   openGraph: {
     title: "ZEYNEP ERVA CESUR",
