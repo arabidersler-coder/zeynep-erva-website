@@ -11,10 +11,13 @@ export default function Hero() {
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-black/80 z-10" /> {/* Dark Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black z-10" /> {/* Vertical Vignette */}
-                <img
+                <motion.img
                     src="/hero-portrait.jpg"
                     alt="Zeynep Erva Cesur"
-                    className="w-full h-full object-cover object-top opacity-30 scale-105 animate-fade-in"
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 0.4, scale: 1.05 }}
+                    transition={{ duration: 2, ease: "easeOut" }}
+                    className="w-full h-full object-cover object-top"
                 />
             </div>
 
