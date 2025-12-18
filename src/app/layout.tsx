@@ -51,7 +51,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
   children,
