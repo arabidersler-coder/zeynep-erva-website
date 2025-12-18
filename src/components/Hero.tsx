@@ -7,9 +7,20 @@ export default function Hero() {
     return (
         <section className="h-screen flex flex-col justify-center items-center relative overflow-hidden">
 
+            {/* Background Image - Cinematic Overlay */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-black/80 z-10" /> {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black z-10" /> {/* Vertical Vignette */}
+                <img
+                    src="/hero-portrait.jpg"
+                    alt="Zeynep Erva Cesur"
+                    className="w-full h-full object-cover object-top opacity-30 scale-105 animate-fade-in"
+                />
+            </div>
+
             {/* Background Ambience */}
-            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] pointer-events-none mix-blend-soft-light" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[var(--accent-gold)]/5 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] pointer-events-none mix-blend-soft-light z-20" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[var(--accent-gold)]/5 rounded-full blur-[150px] pointer-events-none mix-blend-screen z-20" />
 
             <motion.div
                 initial={{ opacity: 0, y: 40 }}
