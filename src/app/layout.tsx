@@ -51,6 +51,8 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+import { Analytics } from "@vercel/analytics/react";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -58,13 +60,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-black text-white`}
-      >
-        <BackgroundMusic />
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased text-white bg-[#050505] selection:bg-[var(--accent-gold)] selection:text-white pb-safe`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
 }
-
