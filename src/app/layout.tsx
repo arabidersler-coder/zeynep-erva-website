@@ -61,6 +61,7 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased text-white bg-[#050505] selection:bg-[var(--accent-gold)] selection:text-white pb-safe`}>
+        <BackgroundMusic />
         {children}
         <Analytics />
       </body>
