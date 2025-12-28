@@ -25,7 +25,7 @@ function HomeContent() {
       ) : (
         <>
           <Hero isOfficial={isOfficial} />
-          <About />
+          <About isOfficial={isOfficial} />
           {!isOfficial && <PersonalNotes />}
           <Timeline />
           <References />
