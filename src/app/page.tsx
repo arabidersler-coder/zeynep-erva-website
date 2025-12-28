@@ -10,9 +10,13 @@ import Gallery from "@/components/Gallery";
 import Socials from "@/components/Socials";
 import SplashScreen from "@/components/SplashScreen";
 import Manifesto from "@/components/Manifesto";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function Home() {
+function HomeContent() {
   const [showSplash, setShowSplash] = useState(true);
+  const searchParams = useSearchParams();
+  const isOfficial = searchParams.get('mode') === 'official';
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-white/20">
@@ -20,16 +24,24 @@ export default function Home() {
         <SplashScreen onComplete={() => setShowSplash(false)} />
       ) : (
         <>
-          <Hero />
+          <Hero isOfficial={isOfficial} />
           <About />
-          <PersonalNotes />
+          {!isOfficial && <PersonalNotes />}
           <Timeline />
           <References />
           <Gallery />
-          <Manifesto />
+          {!isOfficial && <Manifesto />}
           <Socials />
         </>
       )}
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
   );
 }

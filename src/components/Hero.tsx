@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 
-export default function Hero() {
+export default function Hero({ isOfficial = false }: { isOfficial?: boolean }) {
     return (
         <section className="h-screen flex flex-col justify-center items-center relative overflow-hidden">
 
@@ -15,9 +15,9 @@ export default function Hero() {
                     src="/hero-portrait.jpg"
                     alt="Zeynep Erva Cesur"
                     initial={{ opacity: 0, scale: 1.1 }}
-                    animate={{ opacity: 0.4, scale: 1.05 }}
+                    animate={{ opacity: isOfficial ? 0.2 : 0.4, scale: 1.05 }} // Darker in official mode
                     transition={{ duration: 2, ease: "easeOut" }}
-                    className="w-full h-full object-cover object-top"
+                    className={`w-full h-full object-cover object-top ${isOfficial ? 'grayscale' : ''}`} // B&W in official mode
                 />
             </div>
 
@@ -37,7 +37,7 @@ export default function Hero() {
                     transition={{ delay: 0.5, duration: 1.5 }}
                     className="text-white/60 text-xs md:text-sm uppercase tracking-[0.5em] font-light"
                 >
-                    Basın Mensubu
+                    {isOfficial ? "T.C. Dışişleri Bakanlığı" : "Basın Mensubu"}
                 </motion.p>
 
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-snug">
